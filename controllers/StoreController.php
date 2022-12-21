@@ -36,6 +36,22 @@ class StoreController extends Controller
         );
     }
 
+        /**
+     * {@inheritdoc}
+     */
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
+        ];
+    }
+
     /**
      * Lists all Store models.
      *
@@ -86,34 +102,22 @@ class StoreController extends Controller
     public function actionCreate()
     {
         $model = new Store();
-      
-       if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-        Yii::$app->response->format =  yii\web\Response::FORMAT_JSON;
-        $transaction = \Yii::$app->db->beginTransaction();
-        $model->store_image = UploadedFile::getInstance($model, 'store_image');
-        try {
-            if ($model->validate()) {
-              
-                $flag = $model->save(false);
-                if ($flag == true) {
-                    $transaction->commit();
-                    if ($model->store_image ){
-                      
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            $model->store_image = UploadedFile::getInstance($model, 'store_image');
+            Yii::$app->response->format =  yii\web\Response::FORMAT_JSON;
+
+        if ($model->validate()) {
+                
+                if ( $model->store_image ){
                     $uploadedFileName = 'upload/'.$model->code.'.'.$model->store_image->extension; 
                     $model->store_image->saveAs($uploadedFileName);
-                    }
-                    
-                    return array( 'status' => '200', 'type' => 'success', 'message' => 'Store created successfully.');
-                } else {
-                    $transaction->rollBack();
+                    $model->store_image = $uploadedFileName;
                 }
-            } else {
-                return array('status' => '400', 'type' => 'warning', 'message' => 'Store can not created.');
-            }
-        } catch (Exception $ex) {
-            $transaction->rollBack();
+                if ($model->save()) {
+                     return array( 'status' => '200', 'type' => 'success', 'message' => 'Store created successfully.');
+                } 
+            } 
         }
-    }
         return $this->render('create', [
             'model' => $model,
         ]);

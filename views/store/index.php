@@ -14,14 +14,11 @@ $this->title = 'Stores';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6 right-boder">
         <div class="store-index">
             
             <h1><?= Html::encode($this->title) ?></h1>
 
-            <p>
-                <?= Html::a('Create Store', ['create'], ['class' => 'btn btn-success']) ?>
-            </p>
 
             <?php Pjax::begin(['id' => 'store-index']); ?>
             <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

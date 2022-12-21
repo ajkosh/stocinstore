@@ -20,10 +20,12 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
+       'css/admin.css',
         'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css',
         'css/site.css',
     ];
     public $js = [
+        'js/admin.js',
         'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js',
         'js/custom.js',
        

@@ -1,13 +1,4 @@
 $(document).ready(function () {
-    $("#enable-store").click(function() {
-    
-        if($(this).is(":checked")) {
-         $(".store-image").show(300);
-        } else {
-            $(".store-image").hide(200);
-        }
-    });
-
     $('#store_form').on('beforeSubmit', function(e) {
         var form = $(this);
         var formData = form.serialize();
@@ -18,14 +9,21 @@ $(document).ready(function () {
            processData: false,
            contentType: false,
                 success: function (response) {
-                    toastr["success"]('Form saved Successfully');
-                    $.pjax.reload({container:'#store-index'});
-                
+                    if(response.status == 200) {
+                        toastr["success"]('Form saved Successfully');
+                        $.pjax.reload({container: '#storeForm'}).done(function () {
+                           $.pjax.reload({container: '#store-index'});
+                        });
+         
+                    } else {
+                        console.log(response);
+                        toastr["error"]('Form did not save');
+                    }
                 },
-                error: function () {
-                    toastr["error"]('Form did not save');
-                
-        
+                error: function (response) {
+                    console.log(response);
+
+                    toastr["error"]('Error: Form did not save, Internal server error');
                 }
         });
     

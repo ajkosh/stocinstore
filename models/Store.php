@@ -42,9 +42,9 @@ class Store extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-           // [['code', 'store_name','store_type_id','city','country','postcode','address_line_1','enable_for_store_locator'], 'required'],
-            [['code', 'store_name'], 'required'],
-            [['store_image'], 'file', 'extensions' => 'png', 'skipOnEmpty' => true, 'maxSize' => 312000, 'tooBig' => 'File Limit is 500KB'],
+            [['code', 'store_name','store_type_id','city','country','postcode','address_line_1','enable_for_store_locator','region_code'], 'required'],
+        //    [['code', 'store_name'], 'required'],
+            [['store_image'], 'file', 'extensions' => 'png', 'skipOnEmpty' => true, 'maxSize' => 312000, 'tooBig' => 'File Limit is 300KB'],
             [['code'], 'unique'],
             [['store_type_id', 'is_active', 'enable_for_find_in_store', 'enable_for_store_locator'], 'integer'],
             [['code', 'store_name', 'region_code', 'city'], 'string', 'max' => 50],
@@ -53,7 +53,7 @@ class Store extends \yii\db\ActiveRecord
             [['postcode'], 'string', 'max' => 20],
             [['store_locator_page_url'],'url'],
             [['store_image'], 'required', 'when' => function ($model) {
-                return $model->enable_for_store_locator == true;
+                return $model->enable_for_store_locator == '1';
             }, 'whenClient' => "function (attribute, value) {
                 return $('#enable-store').prop('checked') == true;
             }"],

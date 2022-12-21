@@ -85,3 +85,10 @@ a.desc:after {
 .help-block {
     color: #a94442;
 }
+.has-error .form-control {
+    border-color: #a94442!important;
+}
+
+.right-boder {
+    border-right: 0.1rem solid;
+}
